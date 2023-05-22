@@ -19,8 +19,9 @@ public class AccountDAO {
 
   public static Optional<Account> addAccount(Account account) {
 
-    // try with resources automatically closes connection at the end of the block
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       // SQL logic
       String sql = "insert into account values (default, ?, ?)";
@@ -40,8 +41,13 @@ public class AccountDAO {
         return Optional.of(newAcc);
       }
 
+      // connection.close();
+
     // SQL exception will be thrown if the username is already taken because it's defined as unique in SocialMedia.sql
     } catch (SQLException e) {
+
+      e.printStackTrace();
+
       return Optional.empty();
     }
 
@@ -52,7 +58,9 @@ public class AccountDAO {
 
   public static Optional<Account> login(Account account) {
 
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       String sql = "select * from account where username = ? and password = ?";
 
@@ -70,7 +78,11 @@ public class AccountDAO {
         return Optional.of(loggedInAcc);
       }
 
+      // connection.close();
+
     } catch (SQLException e) {
+
+      e.printStackTrace();
 
       return Optional.empty();
 

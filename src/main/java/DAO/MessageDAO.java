@@ -31,7 +31,9 @@ public class MessageDAO {
 
   public static Optional<Message> newMessage(Message message) {
 
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       String sql = "insert into message values (default, ?, ?, ?)";
 
@@ -53,7 +55,11 @@ public class MessageDAO {
         return Optional.of(newMessage);
       }
 
+      // connection.close();
+
     } catch (SQLException e) {
+
+      e.printStackTrace();
 
       return Optional.empty();
 
@@ -67,7 +73,9 @@ public class MessageDAO {
 
     List<Message> messages = new ArrayList<>();
 
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       String sql = "select * from message";
 
@@ -85,6 +93,8 @@ public class MessageDAO {
 
       }
 
+      // connection.close();
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -93,7 +103,9 @@ public class MessageDAO {
 
   public static Optional<Message> getMessageById(int id) {
 
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       String sql = "select * from message where message_id = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
@@ -110,7 +122,12 @@ public class MessageDAO {
         return Optional.of(returnMessage);
       }
 
+      // connection.close();
+
     } catch (SQLException e) {
+
+      e.printStackTrace();
+
       return Optional.empty();
     }
     return Optional.empty();
@@ -118,7 +135,9 @@ public class MessageDAO {
 
   public static Optional<Message> deleteMessage(int id) {
 
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       String sql = "select * from message where message_id = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
@@ -135,7 +154,11 @@ public class MessageDAO {
         return Optional.of(returnMessage);
       }
 
+      // connection.close();
+
     } catch (SQLException e) {
+
+      e.printStackTrace();
 
       return Optional.empty();
     }
@@ -146,7 +169,9 @@ public class MessageDAO {
 
   public static Optional<Message> updateMessage(int id, String message) {
 
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       String sql = "update message set message_text = ? where message_id = ?";
       PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -172,7 +197,11 @@ public class MessageDAO {
         return Optional.of(returnMessage);
       }
 
+      // connection.close();
+
     } catch (SQLException e) {
+
+      e.printStackTrace();
 
       return Optional.empty();
 
@@ -186,7 +215,9 @@ public class MessageDAO {
 
     List<Message> messages = new ArrayList<>();
 
-    try (Connection connection = ConnectionUtil.getConnection()) {
+    try {
+
+      Connection connection = ConnectionUtil.getConnection();
 
       String sql = "select * from message where posted_by = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
@@ -204,9 +235,13 @@ public class MessageDAO {
         Message nextMessage = new Message(message_id, posted_by, message_text, time_posted_epoch);
         messages.add(nextMessage);
       }
+
+      // connection.close();
+
     } catch (SQLException e) {
       e.printStackTrace();
-    }
+    } 
+    
     return messages;
 
   }
